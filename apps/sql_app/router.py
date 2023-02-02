@@ -12,6 +12,7 @@ Noted:
     In that case, the URL would be: /files//home/johndoe/myfile.txt, with a double slash (//) between files and home.
 """
 
+
 @router.post("/users/", response_model=schemas.User)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = await sevices.get_user_by_email(db, email=user.email)
