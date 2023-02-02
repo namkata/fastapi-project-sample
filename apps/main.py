@@ -1,4 +1,6 @@
 import logging
+import os
+
 from fastapi import FastAPI
 from apps.sql_app import models
 from apps.database import engine
@@ -6,10 +8,9 @@ from apps.sql_app.router import router as sql_app_router
 from fastapi.middleware.cors import CORSMiddleware
 from apps.config import settings, logging_conf
 from logging.config import dictConfig
-from apps.utils import check_db_connected
 
-dictConfig(logging_conf)
 models.Base.metadata.create_all(bind=engine)
+dictConfig(logging_conf)
 
 app = FastAPI(
     title=settings.project_title,
@@ -34,15 +35,12 @@ app.include_router(sql_app_router, prefix="", tags=["Auth"])
 
 # @app.on_event("startup")
 # async def startup_event():
-#     await check_db_connected()
-
-# @app.middleware("http")
-# @app.middleware("https")
-# async def db_session_middleware(request: Request, call_next):
-#     response = Response("Internal server error", status_code=500)
-#     try:
-#         request.state.db = SessionLocal()
-#         response = await call_next(request)
-#     finally:
-#         request.state.db.close()
-#     return response
+#     """Startup application."""
+#     db_url = os.getenv("PG_DNS")
+#
+#     if not db_url.__contains__("sqlite"):
+#         Base.metadata.drop_all(bind=engine)
+#         Base.metadata.create_all(bind=engine)
+#
+#     database = app.state.database
+#     if not database.i

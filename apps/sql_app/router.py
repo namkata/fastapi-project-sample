@@ -15,7 +15,7 @@ Noted:
 
 @router.post("/users/", response_model=schemas.User)
 async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = await sevices.get_user_by_email(db, email=user.email)
+    db_user = sevices.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return sevices.create_user(db=db, user=user)
@@ -23,7 +23,7 @@ async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.get("/users/", response_model=list[schemas.User])
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = await sevices.get_users(db, skip=skip, limit=limit)
+    users = sevices.get_users(db, skip=skip, limit=limit)
     return users
 
 
