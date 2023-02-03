@@ -5,7 +5,7 @@ from sqlalchemy import pool
 from alembic import context
 from apps.config import settings
 # import all models in systems
-from apps.database import metadata
+from apps.database import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -20,7 +20,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = metadata
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -29,6 +29,8 @@ target_metadata = metadata
 
 db_url = settings.pg_dsn
 config.set_main_option("sqlalchemy.url", db_url)
+config.compare_type = True
+config.compare_server_default = True
 
 
 def run_migrations_offline() -> None:

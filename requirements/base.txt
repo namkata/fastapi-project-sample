@@ -6,3 +6,5 @@ python-dotenv
 alembic
 databases
 asyncpg
+flake8
+black
